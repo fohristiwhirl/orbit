@@ -50,8 +50,9 @@ function NewSim() {
 
 	let sim = {
 		i: 0,
-		x: 0,
-		y: 0,
+		camx: 0,
+		camy: 0,
+		zoom: 1,
 		constants: {
 			min_divisor: 1
 		},
@@ -80,6 +81,19 @@ function NewSim() {
 		for (let o of this.objects) {
 			o.move();
 		}
+
+		if (this.objects.length > 0) {
+			this.camx = this.objects[0].x;
+			this.camy = this.objects[0].y;
+		}
+	};
+
+	sim.zoom_event = function(event) {
+		if (event.deltaY > 0) {
+			this.zoom *= 0.95;
+		} if (event.deltaY < 0) {
+			this.zoom /= 0.95;
+		}
 	};
 
 	sim.draw = function() {
@@ -91,13 +105,10 @@ function NewSim() {
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 		}
 
-		let screen_mid_x = canvas.width / 2;
-		let screen_mid_y = canvas.height / 2;
-
 		for (let o of this.objects) {
 
-			let screen_x = screen_mid_x + o.x;
-			let screen_y = screen_mid_y + o.y;
+			let screen_x = (canvas.width / 2) + (o.x * this.zoom) - (this.camx * this.zoom);
+			let screen_y = (canvas.height / 2) + (o.y * this.zoom) - (this.camy * this.zoom);
 
 			let radius = Math.ceil(Math.log(o.mass));
 
@@ -122,4 +133,9 @@ function NewSim() {
 
 let sim = NewSim();
 sim.objects = DefaultSystem();
+
+document.addEventListener("wheel", (event) => {
+	sim.zoom_event(event);
+});
+
 sim.spin();
