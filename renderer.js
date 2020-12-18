@@ -42,7 +42,7 @@ function DefaultSystem() {
 	let system = [];
 	system.push(NewObject(0, 0, 0, 0, 0, 0, 1000, "#ffff00"));
 	system.push(NewObject(300, 0, 0, 0, 2, 0, 10, "#00ffff"));
-	system.push(NewObject(300, 20, 0, -0.6, 2, 0, 0.1, "#ffffff"));
+	system.push(NewObject(300, 20, 0, -0.66, 2, 0, 0.1, "#ffffff"));
 	return system;
 }
 
@@ -84,7 +84,7 @@ function NewSim() {
 
 	sim.draw = function() {
 
-		if (this.i % 120 === 1) {					// Every 60 frames, update the canvas size...
+		if (this.i % 60 === 1) {					// Every 60 frames, update the canvas size...
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 		} else {
