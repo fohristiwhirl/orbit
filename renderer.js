@@ -5,11 +5,9 @@
 let canvas = document.getElementById("main_canvas");
 let ctx = canvas.getContext("2d");
 
-function NewObject(x, y, z, speedx, speedy, speedz, mass, color) {
+let object_props = {
 
-	let o = {x, y, z, speedx, speedy, speedz, mass, color};
-
-	o.gravitate = function(other, constants) {
+	gravitate: function(other, constants) {
 
 		let dx = other.x - this.x;
 		let dy = other.y - this.y;
@@ -27,14 +25,18 @@ function NewObject(x, y, z, speedx, speedy, speedz, mass, color) {
 		this.speedx += dx * adjusted_force;
 		this.speedy += dy * adjusted_force;
 		this.speedz += dz * adjusted_force;
-	};
+	},
 
-	o.move = function() {
+	move: function() {
 		this.x += this.speedx;
 		this.y += this.speedy;
 		this.z += this.speedz;
-	};
+	}
+};
 
+function NewObject(x, y, z, speedx, speedy, speedz, mass, color) {
+	let o = Object.create(object_props);
+	Object.assign(o, {x, y, z, speedx, speedy, speedz, mass, color});
 	return o;
 }
 
